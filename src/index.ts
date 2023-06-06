@@ -110,10 +110,71 @@ const desserts = [
         ],
         "method": [
             {
-                "step_1": "Line an 18-20cm square baking tin with a strip of baking parchment, leaving the ends overhanging – this will help you lift the cheesecake out later. Put the butter in a large heatproof bowl that has a wide lip and set over a smaller heatproof bowl filled with boiling water from the kettle. Leave to stand for a minute, then stir until completely smooth. Stir in the crushed biscuits, then spoon the mixture into the prepared tin, pressing it down using the back of a spoon.",
+                "step_1": "Line an 18-20cm square baking tin with a strip of baking parchment, leaving the ends overhanging, this will help you lift the cheesecake out later. Put the butter in a large heatproof bowl that has a wide lip and set over a smaller heatproof bowl filled with boiling water from the kettle. Leave to stand for a minute, then stir until completely smooth. Stir in the crushed biscuits, then spoon the mixture into the prepared tin, pressing it down using the back of a spoon.",
                 "step_2": "Beat the soft cheese, icing sugar, peanut butter and vanilla together in a bowl until well combined. Whisk the double cream in a separate bowl until it’s just holding its shape. Gently fold this into the peanut butter mixture, then spread over the biscuit base and smooth the surface using the back of a spoon. Chill for at least 1 hr to set. Will keep chilled for up to one day.",
                 "step_3": "Meanwhile, tip the jelly cubes into a heatproof bowl and pour over 100ml boiling water. Stir to dissolve, then add the raspberries and sugar and stir, crushing the berries with the spoon. Push through a sieve into a jug, then pour this over the set cheesecake. Chill for at least 4hrs. Will keep chilled for up to two days. Run a knife around the sides, then use the overhanging parchment to lift the cheesecake onto a board. Cut into squares.",
             }
         ]
     },
 ]
+
+const typeDefs = `
+    type Query {
+        desserts: [Dessert]
+    },
+
+    type Dessert {
+        name: String,
+        photoUrl: String,
+        ingredients: [Ingredients],
+        nutrition: [Nutrition],
+        method: [Method]
+    },
+
+    type Method {
+        step_1: String,
+        step_2: String,
+        step_3: String,
+        step_4: String,
+        step_5: String
+    },
+
+    type Nutrition {
+        kcal: Int,
+        fat: String,
+        saturates: String,
+        carbs: String,
+        sugars: String,
+        fibre: String,
+        protein: String,
+        salt: String
+    },
+
+    type Ingredients {
+        first_ingredient: String,
+        second_ingredient: String,
+        third_ingredient: String,
+        fourth_ingredient: String,
+        fifth_ingredient: String,
+        sixth_ingredient: String,
+        seventh_ingredient: String,
+        eighth_ingredient: String
+    },
+
+`;
+
+const resolvers = {
+    Query: {
+        desserts: () => desserts
+    }
+}
+
+const server = new ApolloServer({
+    typeDefs, resolvers
+})
+
+const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+});
+
+console.log(`🚀  Server ready at: ${url}`);
